@@ -1,1293 +1,1321 @@
 {
- "boxes": [
-  {
-   "type": "floor",
-   "pos": [
-    0.0,
-    -0.1,
-    0.0
-   ],
-   "size": [
-    6,
-    0.2,
-    6
-   ],
-   "note": "Basement_Start"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    0.0,
-    3.1,
-    0.0
-   ],
-   "size": [
-    6,
-    0.2,
-    6
-   ],
-   "note": "Basement_Start"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    0.0,
-    -0.1,
-    -4.5
-   ],
-   "size": [
-    2,
-    0.2,
-    3
-   ],
-   "note": "Basement_Corridor1"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    0.0,
-    3.1,
-    -4.5
-   ],
-   "size": [
-    2,
-    0.2,
-    3
-   ],
-   "note": "Basement_Corridor1"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    0.0,
-    -0.1,
-    -8.0
-   ],
-   "size": [
-    10,
-    0.2,
-    4
-   ],
-   "note": "Basement_Hallway"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    0.0,
-    3.1,
-    -8.0
-   ],
-   "size": [
-    10,
-    0.2,
-    4
-   ],
-   "note": "Basement_Hallway"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    -7.5,
-    -0.1,
-    -8.0
-   ],
-   "size": [
-    5,
-    0.2,
-    4
-   ],
-   "note": "Basement_Storage"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    -7.5,
-    3.1,
-    -8.0
-   ],
-   "size": [
-    5,
-    0.2,
-    4
-   ],
-   "note": "Basement_Storage"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    7.5,
-    -0.1,
-    -8.0
-   ],
-   "size": [
-    5,
-    0.2,
-    4
-   ],
-   "note": "Basement_Boiler"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    7.5,
-    3.1,
-    -8.0
-   ],
-   "size": [
-    5,
-    0.2,
-    4
-   ],
-   "note": "Basement_Boiler"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    0.0,
-    -0.1,
-    -13.0
-   ],
-   "size": [
-    4,
-    0.2,
-    6
-   ],
-   "note": "Basement_Stairs"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    0.0,
-    1.5,
-    3
-   ],
-   "size": [
-    6,
-    3.0,
-    0.3
-   ],
-   "note": "Start south(back) full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -2.0,
-    1.5,
-    -3
-   ],
-   "size": [
-    2,
-    3.0,
-    0.3
-   ],
-   "note": "Start north->Corridor1 seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    2.0,
-    1.5,
-    -3
-   ],
-   "size": [
-    2,
-    3.0,
-    0.3
-   ],
-   "note": "Start north->Corridor1 seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -3,
-    1.5,
-    0.0
-   ],
-   "size": [
-    0.3,
-    3.0,
-    6
-   ],
-   "note": "Start west full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    3,
-    1.5,
-    0.0
-   ],
-   "size": [
-    0.3,
-    3.0,
-    6
-   ],
-   "note": "Start east full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -1,
-    1.5,
-    -4.5
-   ],
-   "size": [
-    0.3,
-    3.0,
-    3
-   ],
-   "note": "Corridor1 west full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    1,
-    1.5,
-    -4.5
-   ],
-   "size": [
-    0.3,
-    3.0,
-    3
-   ],
-   "note": "Corridor1 east full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -3.0,
-    1.5,
-    -6
-   ],
-   "size": [
-    4,
-    3.0,
-    0.3
-   ],
-   "note": "Hallway south->Corridor1 seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    3.0,
-    1.5,
-    -6
-   ],
-   "size": [
-    4,
-    3.0,
-    0.3
-   ],
-   "note": "Hallway south->Corridor1 seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -3.0,
-    1.5,
-    -10
-   ],
-   "size": [
-    4,
-    3.0,
-    0.3
-   ],
-   "note": "Hallway north->Stairs seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    3.0,
-    1.5,
-    -10
-   ],
-   "size": [
-    4,
-    3.0,
-    0.3
-   ],
-   "note": "Hallway north->Stairs seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -5,
-    1.5,
-    -9.25
-   ],
-   "size": [
-    0.3,
-    3.0,
-    1.5
-   ],
-   "note": "Hallway west->Storage seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -5,
-    1.5,
-    -6.75
-   ],
-   "size": [
-    0.3,
-    3.0,
-    1.5
-   ],
-   "note": "Hallway west->Storage seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    5,
-    1.5,
-    -9.25
-   ],
-   "size": [
-    0.3,
-    3.0,
-    1.5
-   ],
-   "note": "Hallway east->Boiler seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    5,
-    1.5,
-    -6.75
-   ],
-   "size": [
-    0.3,
-    3.0,
-    1.5
-   ],
-   "note": "Hallway east->Boiler seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -7.5,
-    1.5,
-    -10
-   ],
-   "size": [
-    5,
-    3.0,
-    0.3
-   ],
-   "note": "Storage north full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -7.5,
-    1.5,
-    -6
-   ],
-   "size": [
-    5,
-    3.0,
-    0.3
-   ],
-   "note": "Storage south full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -10,
-    1.5,
-    -8.0
-   ],
-   "size": [
-    0.3,
-    3.0,
-    4
-   ],
-   "note": "Storage west full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    7.5,
-    1.5,
-    -10
-   ],
-   "size": [
-    5,
-    3.0,
-    0.3
-   ],
-   "note": "Boiler north full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    7.5,
-    1.5,
-    -6
-   ],
-   "size": [
-    5,
-    3.0,
-    0.3
-   ],
-   "note": "Boiler south full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    10,
-    1.5,
-    -8.0
-   ],
-   "size": [
-    0.3,
-    3.0,
-    4
-   ],
-   "note": "Boiler east full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -2,
-    1.5,
-    -13.0
-   ],
-   "size": [
-    0.3,
-    3.0,
-    6
-   ],
-   "note": "Stairs west full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    2,
-    1.5,
-    -13.0
-   ],
-   "size": [
-    0.3,
-    3.0,
-    6
-   ],
-   "note": "Stairs east full"
-  },
-  {
-   "type": "ramp",
-   "bottom": [
-    0.0,
-    0.0,
-    -9.75
-   ],
-   "top": [
-    0.0,
-    3.3,
-    -16.25
-   ],
-   "width": 3.6,
-   "thickness": 0.3,
-   "note": "Basement->Upper stairs ramp"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    0.0,
-    3.1999999999999997,
-    -20.0
-   ],
-   "size": [
-    6,
-    0.2,
-    4
-   ],
-   "note": "Foyer main"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    -2.5,
-    3.1999999999999997,
-    -17.0
-   ],
-   "size": [
-    1,
-    0.2,
-    2
-   ],
-   "note": "Foyer south-west sliver (beside stairwell)"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    2.5,
-    3.1999999999999997,
-    -17.0
-   ],
-   "size": [
-    1,
-    0.2,
-    2
-   ],
-   "note": "Foyer south-east sliver (beside stairwell)"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    0.0,
-    6.3999999999999995,
-    -19.0
-   ],
-   "size": [
-    6,
-    0.2,
-    6
-   ],
-   "note": "Foyer"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    0.0,
-    3.1999999999999997,
-    -23.5
-   ],
-   "size": [
-    8,
-    0.2,
-    3
-   ],
-   "note": "Upper_Hallway"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    0.0,
-    6.3999999999999995,
-    -23.5
-   ],
-   "size": [
-    8,
-    0.2,
-    3
-   ],
-   "note": "Upper_Hallway"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    -7.0,
-    3.1999999999999997,
-    -25.0
-   ],
-   "size": [
-    6,
-    0.2,
-    6
-   ],
-   "note": "Raphael_Bedroom"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    -7.0,
-    6.3999999999999995,
-    -25.0
-   ],
-   "size": [
-    6,
-    0.2,
-    6
-   ],
-   "note": "Raphael_Bedroom"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    6.0,
-    3.1999999999999997,
-    -23.5
-   ],
-   "size": [
-    4,
-    0.2,
-    3
-   ],
-   "note": "Bathroom"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    6.0,
-    6.3999999999999995,
-    -23.5
-   ],
-   "size": [
-    4,
-    0.2,
-    3
-   ],
-   "note": "Bathroom"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    -0.5,
-    3.1999999999999997,
-    -28.5
-   ],
-   "size": [
-    7,
-    0.2,
-    7
-   ],
-   "note": "Kitchen"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    -0.5,
-    6.3999999999999995,
-    -28.5
-   ],
-   "size": [
-    7,
-    0.2,
-    7
-   ],
-   "note": "Kitchen"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    7.0,
-    3.1999999999999997,
-    -29.0
-   ],
-   "size": [
-    8,
-    0.2,
-    8
-   ],
-   "note": "Living_Room"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    7.0,
-    6.3999999999999995,
-    -29.0
-   ],
-   "size": [
-    8,
-    0.2,
-    8
-   ],
-   "note": "Living_Room"
-  },
-  {
-   "type": "floor",
-   "pos": [
-    0.5,
-    3.1999999999999997,
-    -33.5
-   ],
-   "size": [
-    3,
-    0.2,
-    3
-   ],
-   "note": "Front_Entry"
-  },
-  {
-   "type": "ceiling",
-   "pos": [
-    0.5,
-    6.3999999999999995,
-    -33.5
-   ],
-   "size": [
-    3,
-    0.2,
-    3
-   ],
-   "note": "Front_Entry"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -2.5,
-    4.8,
-    -16
-   ],
-   "size": [
-    1,
-    3.0,
-    0.3
-   ],
-   "note": "Foyer south (stairwell opening) flanks seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    2.5,
-    4.8,
-    -16
-   ],
-   "size": [
-    1,
-    3.0,
-    0.3
-   ],
-   "note": "Foyer south (stairwell opening) flanks seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -3,
-    4.8,
-    -19.0
-   ],
-   "size": [
-    0.3,
-    3.0,
-    6
-   ],
-   "note": "Foyer west full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    3,
-    4.8,
-    -19.0
-   ],
-   "size": [
-    0.3,
-    3.0,
-    6
-   ],
-   "note": "Foyer east full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -2.25,
-    4.8,
-    -22
-   ],
-   "size": [
-    1.5,
-    3.0,
-    0.3
-   ],
-   "note": "Foyer north->Upper_Hallway seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    2.25,
-    4.8,
-    -22
-   ],
-   "size": [
-    1.5,
-    3.0,
-    0.3
-   ],
-   "note": "Foyer north->Upper_Hallway seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -4,
-    4.8,
-    -24.75
-   ],
-   "size": [
-    0.3,
-    3.0,
-    0.5
-   ],
-   "note": "Hallway west->Bedroom seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -4,
-    4.8,
-    -22.25
-   ],
-   "size": [
-    0.3,
-    3.0,
-    0.5
-   ],
-   "note": "Hallway west->Bedroom seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    4,
-    4.8,
-    -24.75
-   ],
-   "size": [
-    0.3,
-    3.0,
-    0.5
-   ],
-   "note": "Hallway east->Bathroom seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    4,
-    4.8,
-    -22.25
-   ],
-   "size": [
-    0.3,
-    3.0,
-    0.5
-   ],
-   "note": "Hallway east->Bathroom seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -2.75,
-    4.8,
-    -25
-   ],
-   "size": [
-    2.5,
-    3.0,
-    0.3
-   ],
-   "note": "Hallway north->Kitchen seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    2.75,
-    4.8,
-    -25
-   ],
-   "size": [
-    2.5,
-    3.0,
-    0.3
-   ],
-   "note": "Hallway north->Kitchen seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -7.0,
-    4.8,
-    -28
-   ],
-   "size": [
-    6,
-    3.0,
-    0.3
-   ],
-   "note": "Bedroom north full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -7.0,
-    4.8,
-    -22
-   ],
-   "size": [
-    6,
-    3.0,
-    0.3
-   ],
-   "note": "Bedroom south full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -10,
-    4.8,
-    -25.0
-   ],
-   "size": [
-    0.3,
-    3.0,
-    6
-   ],
-   "note": "Bedroom west full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    6.0,
-    4.8,
-    -25
-   ],
-   "size": [
-    4,
-    3.0,
-    0.3
-   ],
-   "note": "Bathroom north full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    6.0,
-    4.8,
-    -22
-   ],
-   "size": [
-    4,
-    3.0,
-    0.3
-   ],
-   "note": "Bathroom south full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    8,
-    4.8,
-    -23.5
-   ],
-   "size": [
-    0.3,
-    3.0,
-    3
-   ],
-   "note": "Bathroom east full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -4,
-    4.8,
-    -28.5
-   ],
-   "size": [
-    0.3,
-    3.0,
-    7
-   ],
-   "note": "Kitchen west full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    3,
-    4.8,
-    -31.0
-   ],
-   "size": [
-    0.3,
-    3.0,
-    2
-   ],
-   "note": "Kitchen east->Living_Room seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    3,
-    4.8,
-    -26.5
-   ],
-   "size": [
-    0.3,
-    3.0,
-    3
-   ],
-   "note": "Kitchen east->Living_Room seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -2.5,
-    4.8,
-    -32
-   ],
-   "size": [
-    3,
-    3.0,
-    0.3
-   ],
-   "note": "Kitchen north->Front_Entry seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    2.5,
-    4.8,
-    -32
-   ],
-   "size": [
-    1,
-    3.0,
-    0.3
-   ],
-   "note": "Kitchen north->Front_Entry seg"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    7.0,
-    4.8,
-    -25
-   ],
-   "size": [
-    8,
-    3.0,
-    0.3
-   ],
-   "note": "LivingRoom south full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    7.0,
-    4.8,
-    -33
-   ],
-   "size": [
-    8,
-    3.0,
-    0.3
-   ],
-   "note": "LivingRoom north full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    11,
-    4.8,
-    -29.0
-   ],
-   "size": [
-    0.3,
-    3.0,
-    8
-   ],
-   "note": "LivingRoom east full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    0.5,
-    4.8,
-    -35
-   ],
-   "size": [
-    3,
-    3.0,
-    0.3
-   ],
-   "note": "Entry north (front door) full - LOCKED DOOR spot"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    -1,
-    4.8,
-    -33.5
-   ],
-   "size": [
-    0.3,
-    3.0,
-    3
-   ],
-   "note": "Entry west full"
-  },
-  {
-   "type": "wall",
-   "pos": [
-    2,
-    4.8,
-    -33.5
-   ],
-   "size": [
-    0.3,
-    3.0,
-    3
-   ],
-   "note": "Entry east full"
+  "boxes": [
+    {
+      "type": "floor",
+      "pos": [
+        0.0,
+        -0.1,
+        0.0
+      ],
+      "size": [
+        6,
+        0.2,
+        6
+      ],
+      "note": "Basement_Start"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        0.0,
+        3.1,
+        0.0
+      ],
+      "size": [
+        6,
+        0.2,
+        6
+      ],
+      "note": "Basement_Start"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        0.0,
+        -0.1,
+        -4.5
+      ],
+      "size": [
+        2,
+        0.2,
+        3
+      ],
+      "note": "Basement_Corridor1"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        0.0,
+        3.1,
+        -4.5
+      ],
+      "size": [
+        2,
+        0.2,
+        3
+      ],
+      "note": "Basement_Corridor1"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        0.0,
+        -0.1,
+        -8.0
+      ],
+      "size": [
+        10,
+        0.2,
+        4
+      ],
+      "note": "Basement_Hallway"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        0.0,
+        3.1,
+        -8.0
+      ],
+      "size": [
+        10,
+        0.2,
+        4
+      ],
+      "note": "Basement_Hallway"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        -7.5,
+        -0.1,
+        -8.0
+      ],
+      "size": [
+        5,
+        0.2,
+        4
+      ],
+      "note": "Basement_Storage"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        -7.5,
+        3.1,
+        -8.0
+      ],
+      "size": [
+        5,
+        0.2,
+        4
+      ],
+      "note": "Basement_Storage"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        7.5,
+        -0.1,
+        -8.0
+      ],
+      "size": [
+        5,
+        0.2,
+        4
+      ],
+      "note": "Basement_Boiler"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        7.5,
+        3.1,
+        -8.0
+      ],
+      "size": [
+        5,
+        0.2,
+        4
+      ],
+      "note": "Basement_Boiler"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        0.0,
+        -0.1,
+        -13.0
+      ],
+      "size": [
+        4,
+        0.2,
+        6
+      ],
+      "note": "Basement_Stairs"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        0.0,
+        1.5,
+        3
+      ],
+      "size": [
+        6,
+        3.0,
+        0.3
+      ],
+      "note": "Start south(back) full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -2.0,
+        1.5,
+        -3
+      ],
+      "size": [
+        2,
+        3.0,
+        0.3
+      ],
+      "note": "Start north->Corridor1 seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        2.0,
+        1.5,
+        -3
+      ],
+      "size": [
+        2,
+        3.0,
+        0.3
+      ],
+      "note": "Start north->Corridor1 seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -3,
+        1.5,
+        0.0
+      ],
+      "size": [
+        0.3,
+        3.0,
+        6
+      ],
+      "note": "Start west full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        3,
+        1.5,
+        0.0
+      ],
+      "size": [
+        0.3,
+        3.0,
+        6
+      ],
+      "note": "Start east full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -1,
+        1.5,
+        -4.5
+      ],
+      "size": [
+        0.3,
+        3.0,
+        3
+      ],
+      "note": "Corridor1 west full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        1,
+        1.5,
+        -4.5
+      ],
+      "size": [
+        0.3,
+        3.0,
+        3
+      ],
+      "note": "Corridor1 east full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -3.0,
+        1.5,
+        -6
+      ],
+      "size": [
+        4,
+        3.0,
+        0.3
+      ],
+      "note": "Hallway south->Corridor1 seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        3.0,
+        1.5,
+        -6
+      ],
+      "size": [
+        4,
+        3.0,
+        0.3
+      ],
+      "note": "Hallway south->Corridor1 seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -3.0,
+        1.5,
+        -10
+      ],
+      "size": [
+        4,
+        3.0,
+        0.3
+      ],
+      "note": "Hallway north->Stairs seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        3.0,
+        1.5,
+        -10
+      ],
+      "size": [
+        4,
+        3.0,
+        0.3
+      ],
+      "note": "Hallway north->Stairs seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -5,
+        1.5,
+        -9.25
+      ],
+      "size": [
+        0.3,
+        3.0,
+        1.5
+      ],
+      "note": "Hallway west->Storage seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -5,
+        1.5,
+        -6.75
+      ],
+      "size": [
+        0.3,
+        3.0,
+        1.5
+      ],
+      "note": "Hallway west->Storage seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        5,
+        1.5,
+        -9.25
+      ],
+      "size": [
+        0.3,
+        3.0,
+        1.5
+      ],
+      "note": "Hallway east->Boiler seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        5,
+        1.5,
+        -6.75
+      ],
+      "size": [
+        0.3,
+        3.0,
+        1.5
+      ],
+      "note": "Hallway east->Boiler seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -7.5,
+        1.5,
+        -10
+      ],
+      "size": [
+        5,
+        3.0,
+        0.3
+      ],
+      "note": "Storage north full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -7.5,
+        1.5,
+        -6
+      ],
+      "size": [
+        5,
+        3.0,
+        0.3
+      ],
+      "note": "Storage south full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -10,
+        1.5,
+        -8.0
+      ],
+      "size": [
+        0.3,
+        3.0,
+        4
+      ],
+      "note": "Storage west full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        7.5,
+        1.5,
+        -10
+      ],
+      "size": [
+        5,
+        3.0,
+        0.3
+      ],
+      "note": "Boiler north full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        7.5,
+        1.5,
+        -6
+      ],
+      "size": [
+        5,
+        3.0,
+        0.3
+      ],
+      "note": "Boiler south full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        10,
+        1.5,
+        -8.0
+      ],
+      "size": [
+        0.3,
+        3.0,
+        4
+      ],
+      "note": "Boiler east full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -2,
+        1.5,
+        -13.0
+      ],
+      "size": [
+        0.3,
+        3.0,
+        6
+      ],
+      "note": "Stairs west full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        2,
+        1.5,
+        -13.0
+      ],
+      "size": [
+        0.3,
+        3.0,
+        6
+      ],
+      "note": "Stairs east full"
+    },
+    {
+      "type": "ramp",
+      "bottom": [
+        0.0,
+        0.0,
+        -9.75
+      ],
+      "top": [
+        0.0,
+        3.3,
+        -16.25
+      ],
+      "width": 3.6,
+      "thickness": 0.3,
+      "note": "Basement->Upper stairs ramp"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        0.0,
+        3.1999999999999997,
+        -20.0
+      ],
+      "size": [
+        6,
+        0.2,
+        4
+      ],
+      "note": "Foyer main"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        -2.5,
+        3.1999999999999997,
+        -17.0
+      ],
+      "size": [
+        1,
+        0.2,
+        2
+      ],
+      "note": "Foyer south-west sliver (beside stairwell)"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        2.5,
+        3.1999999999999997,
+        -17.0
+      ],
+      "size": [
+        1,
+        0.2,
+        2
+      ],
+      "note": "Foyer south-east sliver (beside stairwell)"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        0.0,
+        6.3999999999999995,
+        -19.0
+      ],
+      "size": [
+        6,
+        0.2,
+        6
+      ],
+      "note": "Foyer"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        0.0,
+        3.1999999999999997,
+        -23.5
+      ],
+      "size": [
+        8,
+        0.2,
+        3
+      ],
+      "note": "Upper_Hallway"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        0.0,
+        6.3999999999999995,
+        -23.5
+      ],
+      "size": [
+        8,
+        0.2,
+        3
+      ],
+      "note": "Upper_Hallway"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        -7.0,
+        3.1999999999999997,
+        -25.0
+      ],
+      "size": [
+        6,
+        0.2,
+        6
+      ],
+      "note": "Raphael_Bedroom"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        -7.0,
+        6.3999999999999995,
+        -25.0
+      ],
+      "size": [
+        6,
+        0.2,
+        6
+      ],
+      "note": "Raphael_Bedroom"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        6.0,
+        3.1999999999999997,
+        -23.5
+      ],
+      "size": [
+        4,
+        0.2,
+        3
+      ],
+      "note": "Bathroom"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        6.0,
+        6.3999999999999995,
+        -23.5
+      ],
+      "size": [
+        4,
+        0.2,
+        3
+      ],
+      "note": "Bathroom"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        -0.5,
+        3.1999999999999997,
+        -28.5
+      ],
+      "size": [
+        7,
+        0.2,
+        7
+      ],
+      "note": "Kitchen"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        -0.5,
+        6.3999999999999995,
+        -28.5
+      ],
+      "size": [
+        7,
+        0.2,
+        7
+      ],
+      "note": "Kitchen"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        7.0,
+        3.1999999999999997,
+        -29.0
+      ],
+      "size": [
+        8,
+        0.2,
+        8
+      ],
+      "note": "Living_Room"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        7.0,
+        6.3999999999999995,
+        -29.0
+      ],
+      "size": [
+        8,
+        0.2,
+        8
+      ],
+      "note": "Living_Room"
+    },
+    {
+      "type": "floor",
+      "pos": [
+        0.5,
+        3.1999999999999997,
+        -33.5
+      ],
+      "size": [
+        3,
+        0.2,
+        3
+      ],
+      "note": "Front_Entry"
+    },
+    {
+      "type": "ceiling",
+      "pos": [
+        0.5,
+        6.3999999999999995,
+        -33.5
+      ],
+      "size": [
+        3,
+        0.2,
+        3
+      ],
+      "note": "Front_Entry"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -2.5,
+        4.8,
+        -16
+      ],
+      "size": [
+        1,
+        3.0,
+        0.3
+      ],
+      "note": "Foyer south (stairwell opening) flanks seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        2.5,
+        4.8,
+        -16
+      ],
+      "size": [
+        1,
+        3.0,
+        0.3
+      ],
+      "note": "Foyer south (stairwell opening) flanks seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -3,
+        4.8,
+        -19.0
+      ],
+      "size": [
+        0.3,
+        3.0,
+        6
+      ],
+      "note": "Foyer west full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        3,
+        4.8,
+        -19.0
+      ],
+      "size": [
+        0.3,
+        3.0,
+        6
+      ],
+      "note": "Foyer east full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -2.25,
+        4.8,
+        -22
+      ],
+      "size": [
+        1.5,
+        3.0,
+        0.3
+      ],
+      "note": "Foyer north->Upper_Hallway seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        2.25,
+        4.8,
+        -22
+      ],
+      "size": [
+        1.5,
+        3.0,
+        0.3
+      ],
+      "note": "Foyer north->Upper_Hallway seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -4,
+        4.8,
+        -24.75
+      ],
+      "size": [
+        0.3,
+        3.0,
+        0.5
+      ],
+      "note": "Hallway west->Bedroom seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -4,
+        4.8,
+        -22.25
+      ],
+      "size": [
+        0.3,
+        3.0,
+        0.5
+      ],
+      "note": "Hallway west->Bedroom seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        4,
+        4.8,
+        -24.75
+      ],
+      "size": [
+        0.3,
+        3.0,
+        0.5
+      ],
+      "note": "Hallway east->Bathroom seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        4,
+        4.8,
+        -22.25
+      ],
+      "size": [
+        0.3,
+        3.0,
+        0.5
+      ],
+      "note": "Hallway east->Bathroom seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -2.75,
+        4.8,
+        -25
+      ],
+      "size": [
+        2.5,
+        3.0,
+        0.3
+      ],
+      "note": "Hallway north->Kitchen seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        2.75,
+        4.8,
+        -25
+      ],
+      "size": [
+        2.5,
+        3.0,
+        0.3
+      ],
+      "note": "Hallway north->Kitchen seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -7.0,
+        4.8,
+        -28
+      ],
+      "size": [
+        6,
+        3.0,
+        0.3
+      ],
+      "note": "Bedroom north full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -7.0,
+        4.8,
+        -22
+      ],
+      "size": [
+        6,
+        3.0,
+        0.3
+      ],
+      "note": "Bedroom south full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -10,
+        4.8,
+        -25.0
+      ],
+      "size": [
+        0.3,
+        3.0,
+        6
+      ],
+      "note": "Bedroom west full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        6.0,
+        4.8,
+        -25
+      ],
+      "size": [
+        4,
+        3.0,
+        0.3
+      ],
+      "note": "Bathroom north full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        6.0,
+        4.8,
+        -22
+      ],
+      "size": [
+        4,
+        3.0,
+        0.3
+      ],
+      "note": "Bathroom south full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        8,
+        4.8,
+        -23.5
+      ],
+      "size": [
+        0.3,
+        3.0,
+        3
+      ],
+      "note": "Bathroom east full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -4,
+        4.8,
+        -28.5
+      ],
+      "size": [
+        0.3,
+        3.0,
+        7
+      ],
+      "note": "Kitchen west full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        3,
+        4.8,
+        -31.0
+      ],
+      "size": [
+        0.3,
+        3.0,
+        2
+      ],
+      "note": "Kitchen east->Living_Room seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        3,
+        4.8,
+        -26.5
+      ],
+      "size": [
+        0.3,
+        3.0,
+        3
+      ],
+      "note": "Kitchen east->Living_Room seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -2.5,
+        4.8,
+        -32
+      ],
+      "size": [
+        3,
+        3.0,
+        0.3
+      ],
+      "note": "Kitchen north->Front_Entry seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        2.5,
+        4.8,
+        -32
+      ],
+      "size": [
+        1,
+        3.0,
+        0.3
+      ],
+      "note": "Kitchen north->Front_Entry seg"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        7.0,
+        4.8,
+        -25
+      ],
+      "size": [
+        8,
+        3.0,
+        0.3
+      ],
+      "note": "LivingRoom south full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        7.0,
+        4.8,
+        -33
+      ],
+      "size": [
+        8,
+        3.0,
+        0.3
+      ],
+      "note": "LivingRoom north full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        11,
+        4.8,
+        -29.0
+      ],
+      "size": [
+        0.3,
+        3.0,
+        8
+      ],
+      "note": "LivingRoom east full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        0.5,
+        4.8,
+        -35
+      ],
+      "size": [
+        3,
+        3.0,
+        0.3
+      ],
+      "note": "Entry north (front door) full - LOCKED DOOR spot"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -1,
+        4.8,
+        -33.5
+      ],
+      "size": [
+        0.3,
+        3.0,
+        3
+      ],
+      "note": "Entry west full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        2,
+        4.8,
+        -33.5
+      ],
+      "size": [
+        0.3,
+        3.0,
+        3
+      ],
+      "note": "Entry east full"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        -2,
+        1.5,
+        -13
+      ],
+      "size": [
+        0.3,
+        3.0,
+        6
+      ],
+      "note": "Basement_Stairs west (flanks ramp)"
+    },
+    {
+      "type": "wall",
+      "pos": [
+        2,
+        1.5,
+        -13
+      ],
+      "size": [
+        0.3,
+        3.0,
+        6
+      ],
+      "note": "Basement_Stairs east (flanks ramp)"
+    }
+  ],
+  "rooms": [
+    {
+      "name": "Basement_Start",
+      "bounds": [
+        -3,
+        3,
+        -3,
+        3
+      ],
+      "y": 0.0,
+      "height": 3.0
+    },
+    {
+      "name": "Basement_Corridor1",
+      "bounds": [
+        -1,
+        1,
+        -6,
+        -3
+      ],
+      "y": 0.0,
+      "height": 3.0
+    },
+    {
+      "name": "Basement_Hallway",
+      "bounds": [
+        -5,
+        5,
+        -10,
+        -6
+      ],
+      "y": 0.0,
+      "height": 3.0
+    },
+    {
+      "name": "Basement_Storage",
+      "bounds": [
+        -10,
+        -5,
+        -10,
+        -6
+      ],
+      "y": 0.0,
+      "height": 3.0
+    },
+    {
+      "name": "Basement_Boiler",
+      "bounds": [
+        5,
+        10,
+        -10,
+        -6
+      ],
+      "y": 0.0,
+      "height": 3.0
+    },
+    {
+      "name": "Basement_Stairs",
+      "bounds": [
+        -2,
+        2,
+        -16,
+        -10
+      ],
+      "y": 0.0,
+      "height": 3.0
+    },
+    {
+      "name": "Foyer",
+      "bounds": [
+        -3,
+        3,
+        -22,
+        -16
+      ],
+      "y": 3.3,
+      "height": 3.0
+    },
+    {
+      "name": "Upper_Hallway",
+      "bounds": [
+        -4,
+        4,
+        -25,
+        -22
+      ],
+      "y": 3.3,
+      "height": 3.0
+    },
+    {
+      "name": "Raphael_Bedroom",
+      "bounds": [
+        -10,
+        -4,
+        -28,
+        -22
+      ],
+      "y": 3.3,
+      "height": 3.0
+    },
+    {
+      "name": "Bathroom",
+      "bounds": [
+        4,
+        8,
+        -25,
+        -22
+      ],
+      "y": 3.3,
+      "height": 3.0
+    },
+    {
+      "name": "Kitchen",
+      "bounds": [
+        -4,
+        3,
+        -32,
+        -25
+      ],
+      "y": 3.3,
+      "height": 3.0
+    },
+    {
+      "name": "Living_Room",
+      "bounds": [
+        3,
+        11,
+        -33,
+        -25
+      ],
+      "y": 3.3,
+      "height": 3.0
+    },
+    {
+      "name": "Front_Entry",
+      "bounds": [
+        -1,
+        2,
+        -35,
+        -32
+      ],
+      "y": 3.3,
+      "height": 3.0
+    }
+  ],
+  "spawns": {
+    "player_start": [
+      0.0,
+      0.15,
+      1.5
+    ],
+    "player_start_look_at": [
+      0.0,
+      0.15,
+      -3.0
+    ],
+    "monster_spawn_initial": [
+      7.5,
+      0.1,
+      -8.0
+    ],
+    "front_door_locked": [
+      0.5,
+      4.3,
+      -34.9
+    ]
   }
- ],
- "rooms": [
-  {
-   "name": "Basement_Start",
-   "bounds": [
-    -3,
-    3,
-    -3,
-    3
-   ],
-   "y": 0.0,
-   "height": 3.0
-  },
-  {
-   "name": "Basement_Corridor1",
-   "bounds": [
-    -1,
-    1,
-    -6,
-    -3
-   ],
-   "y": 0.0,
-   "height": 3.0
-  },
-  {
-   "name": "Basement_Hallway",
-   "bounds": [
-    -5,
-    5,
-    -10,
-    -6
-   ],
-   "y": 0.0,
-   "height": 3.0
-  },
-  {
-   "name": "Basement_Storage",
-   "bounds": [
-    -10,
-    -5,
-    -10,
-    -6
-   ],
-   "y": 0.0,
-   "height": 3.0
-  },
-  {
-   "name": "Basement_Boiler",
-   "bounds": [
-    5,
-    10,
-    -10,
-    -6
-   ],
-   "y": 0.0,
-   "height": 3.0
-  },
-  {
-   "name": "Basement_Stairs",
-   "bounds": [
-    -2,
-    2,
-    -16,
-    -10
-   ],
-   "y": 0.0,
-   "height": 3.0
-  },
-  {
-   "name": "Foyer",
-   "bounds": [
-    -3,
-    3,
-    -22,
-    -16
-   ],
-   "y": 3.3,
-   "height": 3.0
-  },
-  {
-   "name": "Upper_Hallway",
-   "bounds": [
-    -4,
-    4,
-    -25,
-    -22
-   ],
-   "y": 3.3,
-   "height": 3.0
-  },
-  {
-   "name": "Raphael_Bedroom",
-   "bounds": [
-    -10,
-    -4,
-    -28,
-    -22
-   ],
-   "y": 3.3,
-   "height": 3.0
-  },
-  {
-   "name": "Bathroom",
-   "bounds": [
-    4,
-    8,
-    -25,
-    -22
-   ],
-   "y": 3.3,
-   "height": 3.0
-  },
-  {
-   "name": "Kitchen",
-   "bounds": [
-    -4,
-    3,
-    -32,
-    -25
-   ],
-   "y": 3.3,
-   "height": 3.0
-  },
-  {
-   "name": "Living_Room",
-   "bounds": [
-    3,
-    11,
-    -33,
-    -25
-   ],
-   "y": 3.3,
-   "height": 3.0
-  },
-  {
-   "name": "Front_Entry",
-   "bounds": [
-    -1,
-    2,
-    -35,
-    -32
-   ],
-   "y": 3.3,
-   "height": 3.0
-  }
- ],
- "spawns": {
-  "player_start": [
-   0.0,
-   0.15,
-   1.5
-  ],
-  "player_start_look_at": [
-   0.0,
-   0.15,
-   -3.0
-  ],
-  "monster_spawn_initial": [
-   7.5,
-   0.1,
-   -8.0
-  ],
-  "front_door_locked": [
-   0.5,
-   4.3,
-   -34.9
-  ]
- }
 }

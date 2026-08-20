@@ -75,12 +75,13 @@ func _build_ui() -> void:
 	_flashlight_button = Button.new()
 	_flashlight_button.name = "FlashlightButton"
 	_flashlight_button.text = "LIGHT"
-	_flashlight_button.custom_minimum_size = Vector2(150, 150)
+	_flashlight_button.custom_minimum_size = Vector2(220, 220)
+	_flashlight_button.add_theme_font_size_override("font_size", 30)
 	_flashlight_button.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-	_flashlight_button.offset_left = -180
-	_flashlight_button.offset_top = -210
+	_flashlight_button.offset_left = -250
+	_flashlight_button.offset_top = -270
 	_flashlight_button.offset_right = -30
-	_flashlight_button.offset_bottom = -60
+	_flashlight_button.offset_bottom = -50
 	_flashlight_button.mouse_filter = Control.MOUSE_FILTER_STOP
 	_flashlight_button.pressed.connect(_on_flashlight_pressed)
 	root.add_child(_flashlight_button)
@@ -89,12 +90,13 @@ func _build_ui() -> void:
 	_crank_button = Button.new()
 	_crank_button.name = "CrankButton"
 	_crank_button.text = "CRANK"
-	_crank_button.custom_minimum_size = Vector2(150, 150)
+	_crank_button.custom_minimum_size = Vector2(220, 220)
+	_crank_button.add_theme_font_size_override("font_size", 30)
 	_crank_button.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
-	_crank_button.offset_left = -180
-	_crank_button.offset_top = -390
+	_crank_button.offset_left = -250
+	_crank_button.offset_top = -510
 	_crank_button.offset_right = -30
-	_crank_button.offset_bottom = -240
+	_crank_button.offset_bottom = -290
 	_crank_button.mouse_filter = Control.MOUSE_FILTER_STOP
 	_crank_button.button_down.connect(_on_crank_down)
 	_crank_button.button_up.connect(_on_crank_up)

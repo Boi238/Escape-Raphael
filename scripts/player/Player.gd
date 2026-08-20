@@ -41,7 +41,10 @@ var energy := MAX_ENERGY * 0.5   # start half-charged so the intro isn't pitch d
 var is_cranking := false
 var flashlight_on := false
 
+const JOYSTICK_MAX_RADIUS := 90.0  # px of drag from the anchor point for 100% move speed
+
 var _move_touch_index := -1
+var _move_anchor := Vector2.ZERO
 var _look_touch_index := -1
 var _move_vector := Vector2.ZERO
 var _yaw := 0.0
@@ -56,6 +59,15 @@ func _ready() -> void:
 	add_to_group("player")
 	_yaw = rotation.y
 	_pitch = _head.rotation.x
+
+	# The Basement->Upper ramp inclines at ~27 degrees. CharacterBody3D's
+	# default floor_max_angle (45 deg) should technically already cover
+	# that, but the default floor_snap_length is short enough that
+	# transitioning from flat ground onto an incline can pop the body off
+	# the floor and register as "not on floor" for a frame, which reads
+	# as "stuck." Setting both explicitly here removes the guesswork.
+	floor_max_angle = deg_to_rad(50.0)
+	floor_snap_length = 0.35
 
 	_flashlight.visible = false
 	_flashlight.light_energy = 7.0
@@ -73,6 +85,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.pressed:
 			if event.position.x < half_width and _move_touch_index == -1:
 				_move_touch_index = event.index
+				_move_anchor = event.position  # joystick center = where the thumb landed
 			elif event.position.x >= half_width and _look_touch_index == -1:
 				_look_touch_index = event.index
 		else:
@@ -83,7 +96,14 @@ func _unhandled_input(event: InputEvent) -> void:
 				_look_touch_index = -1
 	elif event is InputEventScreenDrag:
 		if event.index == _move_touch_index:
-			_move_vector = (event.relative * 0.15).limit_length(1.0)
+			# Direction is (current finger pos - anchor), not the raw
+			# per-frame delta - using the delta was the bug behind the
+			# "left-right-left-right" jitter, since tiny frame-to-frame
+			# finger jiggle was being read as a direction change every
+			# single event instead of a stable direction from a fixed
+			# joystick center.
+			var offset := event.position - _move_anchor
+			_move_vector = (offset / JOYSTICK_MAX_RADIUS).limit_length(1.0)
 		elif event.index == _look_touch_index:
 			_yaw -= event.relative.x * LOOK_SENSITIVITY
 			_pitch -= event.relative.y * LOOK_SENSITIVITY

@@ -109,10 +109,21 @@ func _build_ramp(box: Dictionary) -> void:
 	var thickness: float = box.get("thickness", 0.3)
 
 	var mid := (bottom + top) / 2.0
-	var length := bottom.distance_to(top)
+	# Extended past the true bottom/top points on purpose: a ramp box
+	# sized to end exactly where the flat basement/upper floors begin can
+	# leave a razor-thin seam or lip between the two surfaces (rounding,
+	# or the ramp's tilted thickness not projecting to exactly y=0/y=top
+	# at the very edge). CharacterBody3D doesn't auto-step over ledges,
+	# so a seam that's invisible on the mesh can still stop the player
+	# cold. Extending length symmetrically overlaps ~0.5m into each
+	# floor slab, guaranteeing continuous walkable collision.
+	const RAMP_OVERLAP := 1.0
+	var length := bottom.distance_to(top) + RAMP_OVERLAP
 
 	var body := StaticBody3D.new()
 	body.name = "ramp_basement_to_upper"
+	body.collision_layer = 1  # "world" - matches walls/floors/ceilings
+	body.collision_mask = 0
 	add_child(body)
 	body.global_position = mid
 	# Orient so the ramp's local -Z axis points from mid toward "top". This
