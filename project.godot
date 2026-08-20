@@ -1,0 +1,78 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+
+config_version=5
+
+[application]
+
+config/name="Escape Raphael"
+config/version="0.1.0"
+run/main_scene="res://scenes/Level.tscn"
+config/features=PackedStringArray("4.3", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+GameEvents="*res://scripts/autoload/GameEvents.gd"
+
+[audio]
+
+buses/default_bus_layout="res://assets/audio/default_bus_layout.tres"
+
+[display]
+
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/handheld/orientation="portrait"
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[input]
+
+move_forward={
+"deadzone": 0.2,
+"events": []
+}
+move_back={
+"deadzone": 0.2,
+"events": []
+}
+move_left={
+"deadzone": 0.2,
+"events": []
+}
+move_right={
+"deadzone": 0.2,
+"events": []
+}
+crank_flashlight={
+"deadzone": 0.2,
+"events": []
+}
+toggle_flashlight={
+"deadzone": 0.2,
+"events": []
+}
+interact={
+"deadzone": 0.2,
+"events": []
+}
+pause_menu={
+"deadzone": 0.2,
+"events": []
+}
+
+[layer_names]
+
+3d_physics/layer_1="world"
+3d_physics/layer_2="player"
+3d_physics/layer_3="monster"
+3d_physics/layer_4="interactables"
+3d_physics/layer_5="flashlight_light"
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_environment="res://assets/default_env.tres"
