@@ -8,17 +8,6 @@ on:
 env:
   GODOT_VERSION: 4.3
   EXPORT_NAME: escape-raphael
-  # The godot-ci image bakes these paths in as editor settings under
-  # /root/.config, but GitHub Actions' container runner does not run
-  # with HOME=/root, so Godot never sees that file (see the "Set up
-  # Godot export templates + editor settings" step below, which is the
-  # actual fix for that). These env vars are a second, independent path
-  # to the same information - Godot's Android exporter falls back to
-  # them when the editor-settings file lookup comes up empty, so between
-  # the two fixes it doesn't matter which one Godot ends up using.
-  JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
-  ANDROID_HOME: /usr/lib/android-sdk
-  ANDROID_SDK_ROOT: /usr/lib/android-sdk
 
 jobs:
   build:
@@ -32,11 +21,6 @@ jobs:
 
       - name: Create debug keystore
         run: |
-          # Written to a fixed /tmp path (not ~/.android/...) on purpose:
-          # /tmp doesn't depend on HOME resolving the way we expect, and
-          # export_presets.cfg's keystore/debug field points at this
-          # exact path, so the keystore config never depends on editor
-          # settings being read correctly at all.
           keytool -genkey -v -keystore /tmp/debug.keystore \
             -storepass android -alias androiddebugkey -keypass android \
             -keyalg RSA -keysize 2048 -validity 10000 \
@@ -47,13 +31,31 @@ jobs:
           mkdir -v -p ~/.local/share/godot/export_templates
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable \
              ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable || true
-          # Same problem, same fix, for the editor settings file: the
-          # image bakes android_sdk_path/java_sdk_path/debug_keystore
-          # into /root/.config/godot/editor_settings-4.3.tres, but that's
-          # invisible to Godot unless it's under the HOME this container
-          # actually runs with.
           mkdir -v -p ~/.config
           mv /root/.config/godot ~/.config/godot || true
+
+      - name: Install required Android SDK packages
+        run: |
+          # Godot 4.3's Android export template is hardcoded to expect
+          # build-tools 33.0.2 and platform android-33 specifically - this
+          # guarantees they're present under $ANDROID_HOME regardless of
+          # what the base image happens to ship, instead of hoping it's
+          # already there.
+          export ANDROID_HOME=/usr/lib/android-sdk
+          export ANDROID_SDK_ROOT=/usr/lib/android-sdk
+          yes | sdkmanager --sdk_root="${ANDROID_HOME}" \
+            "platforms;android-33" "build-tools;33.0.2" || true
+
+      - name: Diagnostics (only matters if the export step below still fails)
+        run: |
+          echo "---- HOME ----"
+          echo "$HOME"
+          echo "---- editor settings file present? ----"
+          find ~/.config/godot -maxdepth 1 2>&1 || echo "NOT FOUND"
+          echo "---- keystore present? ----"
+          ls -la /tmp/debug.keystore 2>&1 || echo "NOT FOUND"
+          echo "---- installed build-tools versions ----"
+          ls -la /usr/lib/android-sdk/build-tools/ 2>&1 || echo "NOT FOUND"
 
       - name: Make output dir
         run: mkdir -v -p build/android
@@ -63,6 +65,9 @@ jobs:
 
       - name: Export debug APK
         run: |
+          export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+          export ANDROID_HOME=/usr/lib/android-sdk
+          export ANDROID_SDK_ROOT=/usr/lib/android-sdk
           godot --headless --path . \
             --export-debug "Android" build/android/${EXPORT_NAME}-debug.apk
 
