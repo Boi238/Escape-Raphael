@@ -8,6 +8,17 @@ on:
 env:
   GODOT_VERSION: 4.3
   EXPORT_NAME: escape-raphael
+  # The godot-ci image bakes these paths in as editor settings under
+  # /root/.config, but GitHub Actions' container runner does not run
+  # with HOME=/root, so Godot never sees that file (see the "Set up
+  # Godot export templates + editor settings" step below, which is the
+  # actual fix for that). These env vars are a second, independent path
+  # to the same information - Godot's Android exporter falls back to
+  # them when the editor-settings file lookup comes up empty, so between
+  # the two fixes it doesn't matter which one Godot ends up using.
+  JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+  ANDROID_HOME: /usr/lib/android-sdk
+  ANDROID_SDK_ROOT: /usr/lib/android-sdk
 
 jobs:
   build:
@@ -15,62 +26,34 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: barichello/godot-ci:4.3
-    # NOTE: GitHub Actions forces HOME=/github/home inside job containers and
-    # ignores any HOME= you pass in (this is a known, permanent runner
-    # behavior — see actions/runner#863, #1146, #1525 — not something a
-    # workflow-level env var can override). The godot-ci image bakes its
-    # Android SDK path, Java SDK path, and a debug keystore into editor
-    # settings under /root/.config/godot at BUILD time, when HOME really was
-    # /root. At RUN time HOME becomes /github/home, so Godot looks for that
-    # config in the wrong place, finds nothing, and every Android-specific
-    # check (build-tools, keystore, Java SDK) fails at once. The "Fix HOME
-    # override" step below is the actual fix: copy the image's pre-baked
-    # config into wherever $HOME points at runtime, then force-write the
-    # exact values we know are true for this image/keystore, rather than
-    # trust whatever happened to survive the copy.
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Create debug keystore
         run: |
-          mkdir -p ~/.android
-          keytool -genkey -v -keystore ~/.android/debug.keystore \
+          # Written to a fixed /tmp path (not ~/.android/...) on purpose:
+          # /tmp doesn't depend on HOME resolving the way we expect, and
+          # export_presets.cfg's keystore/debug field points at this
+          # exact path, so the keystore config never depends on editor
+          # settings being read correctly at all.
+          keytool -genkey -v -keystore /tmp/debug.keystore \
             -storepass android -alias androiddebugkey -keypass android \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -dname "CN=Android Debug,O=Android,C=US"
 
-      - name: Fix HOME override (editor settings, SDK paths, keystore)
-        run: |
-          mkdir -p ~/.config
-          cp -r /root/.config/godot ~/.config/godot || mkdir -p ~/.config/godot
-
-          SETTINGS=~/.config/godot/editor_settings-${GODOT_VERSION:0:3}.tres
-          if [ ! -f "$SETTINGS" ]; then
-            echo '[gd_resource type="EditorSettings" format=3]' > "$SETTINGS"
-            echo '[resource]' >> "$SETTINGS"
-          fi
-
-          # Strip any stale/incorrect copies of these keys, then write the
-          # values we know are correct for this exact image + our keystore,
-          # instead of trusting whatever the copy brought over.
-          sed -i '/^export\/android\/java_sdk_path/d;/^export\/android\/android_sdk_path/d;/^export\/android\/debug_keystore/d' "$SETTINGS"
-          {
-            echo 'export/android/java_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64"'
-            echo "export/android/android_sdk_path = \"$ANDROID_HOME\""
-            echo "export/android/debug_keystore = \"$HOME/.android/debug.keystore\""
-            echo 'export/android/debug_keystore_user = "androiddebugkey"'
-            echo 'export/android/debug_keystore_pass = "android"'
-          } >> "$SETTINGS"
-
-          echo "---- resulting editor settings ----"
-          cat "$SETTINGS"
-
-      - name: Set up Godot export templates
+      - name: Set up Godot export templates + editor settings
         run: |
           mkdir -v -p ~/.local/share/godot/export_templates
           mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable \
              ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable || true
+          # Same problem, same fix, for the editor settings file: the
+          # image bakes android_sdk_path/java_sdk_path/debug_keystore
+          # into /root/.config/godot/editor_settings-4.3.tres, but that's
+          # invisible to Godot unless it's under the HOME this container
+          # actually runs with.
+          mkdir -v -p ~/.config
+          mv /root/.config/godot ~/.config/godot || true
 
       - name: Make output dir
         run: mkdir -v -p build/android
@@ -79,8 +62,6 @@ jobs:
         run: godot --headless --path . --import || true
 
       - name: Export debug APK
-        env:
-          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
         run: |
           godot --headless --path . \
             --export-debug "Android" build/android/${EXPORT_NAME}-debug.apk
