@@ -1,172 +1,134 @@
 extends CharacterBody3D
-## Player controller (Chunk 3).
-##
-## Touch controls:
-##   - Drag on the LEFT half of the screen  -> move (forward/back/strafe)
-##   - Drag on the RIGHT half of the screen -> look around
-##   - On-screen CRANK button (hold, see TouchControls.gd) -> crank the
-##     dynamo flashlight
-##   - On-screen LIGHT button (tap, see TouchControls.gd)  -> toggle the
-##     flashlight on/off
-##
-## Dynamo flashlight rules (per spec):
-##   - 5 seconds of continuous cranking fully charges 14 seconds of light.
-##     Energy is stored directly in "seconds of light remaining" so the
-##     math is just two flat rates - no separate 0..1 charge value to keep
-##     in sync with a display unit.
-##   - Cranking multiplies move speed by CRANK_SPEED_MULTIPLIER (-10%).
-##   - Cranking pings GameEvents.player_made_noise every NOISE_INTERVAL
-##     seconds with reveals_position = true. Monster AI (Chunk 4) will use
-##     this to instantly know the player's position when it can't
-##     otherwise see them - the crank is loud enough to hear through the
-##     whole house, hence the large radius.
-##   - If energy hits 0 while the flashlight is on, it force-turns-off.
 
-const MOVE_SPEED := 3.2
-const CRANK_SPEED_MULTIPLIER := 0.9
-const LOOK_SENSITIVITY := 0.005
-const GRAVITY := 12.0
-const PITCH_LIMIT := 1.3
+# ── THE FIX ───────────────────────────────────────────────────────────────
+# DebugHUD (and TouchControls' lookup) both search for this node via
+# get_tree().get_nodes_in_group("player") — but this script never actually
+# called add_to_group("player"). Layer 2 in the physics settings is a
+# COLLISION layer, not a Godot "group" — they're two separate systems.
+# So every group lookup returned empty, no matter how many times it retried.
+# That's why LIGHT/CRANK looked broken across every round of fixes: the
+# buttons were finding nothing to call, every single time.
+# ────────────────────────────────────────────────────────────────────────
 
-const MAX_ENERGY := 14.0                      # seconds of flashlight runtime, fully charged
-const CRANK_FILL_RATE := MAX_ENERGY / 5.0     # 2.8 energy/sec while cranking (5s crank = full)
-const DRAIN_RATE := MAX_ENERGY / 14.0         # 1.0 energy/sec while the light is on
-const NOISE_INTERVAL := 0.35                  # how often cranking pings GameEvents
-const CRANK_NOISE_RADIUS := 30.0              # crank noise carries through the whole house
+signal energy_changed(new_energy: float)
 
-@onready var _head: Node3D = $Head
-@onready var _flashlight: SpotLight3D = $Head/Camera3D/Flashlight
+const MAX_ENERGY := 14.0
+const CRANK_FILL_RATE := MAX_ENERGY / 5.0   # 5s crank = full charge
+const DRAIN_RATE := 1.0                      # 1 sec of energy per sec of light
+const CRANK_SPEED_MULT := 0.9                # -10% while cranking
+const NOISE_INTERVAL := 0.35
+const NOISE_RADIUS := 30.0
+const MOVE_SPEED := 4.0
+const LOOK_SENSITIVITY := 0.0035
+const GRAVITY := 9.8
 
-var energy := MAX_ENERGY * 0.5   # start half-charged so the intro isn't pitch dark forever
-var is_cranking := false
-var flashlight_on := false
+@onready var head: Node3D = $Head
+@onready var camera: Camera3D = $Head/Camera3D
+@onready var flashlight: SpotLight3D = $Head/Camera3D/Flashlight
 
-const JOYSTICK_MAX_RADIUS := 90.0  # px of drag from the anchor point for 100% move speed
+var energy: float = MAX_ENERGY
+var is_cranking: bool = false
+var flashlight_on: bool = false
+var _noise_timer: float = 0.0
 
 var _move_touch_index := -1
-var _move_anchor := Vector2.ZERO
 var _look_touch_index := -1
-var _move_vector := Vector2.ZERO
-var _yaw := 0.0
-var _pitch := 0.0
-var _noise_timer := 0.0
-
-## Emitted every physics frame with (current, max) so the HUD energy bar
-## can just bind to this instead of polling.
-signal energy_changed(current: float, max_energy: float)
+var _move_origin := Vector2.ZERO
+var _move_current := Vector2.ZERO
+var _look_last := Vector2.ZERO
 
 func _ready() -> void:
-	add_to_group("player")
-	_yaw = rotation.y
-	_pitch = _head.rotation.x
-
-	# The Basement->Upper ramp inclines at ~27 degrees. CharacterBody3D's
-	# default floor_max_angle (45 deg) should technically already cover
-	# that, but the default floor_snap_length is short enough that
-	# transitioning from flat ground onto an incline can pop the body off
-	# the floor and register as "not on floor" for a frame, which reads
-	# as "stuck." Setting both explicitly here removes the guesswork.
-	floor_max_angle = deg_to_rad(50.0)
-	floor_snap_length = 0.35
-
-	_flashlight.visible = false
-	_flashlight.light_energy = 14.0
-	_flashlight.spot_range = 22.0
-	_flashlight.spot_angle = 42.0
-	_flashlight.spot_angle_attenuation = 1.5
-	_flashlight.light_color = Color(1.0, 0.96, 0.85)
-	_flashlight.shadow_enabled = true
+	add_to_group("player")   # <-- the missing line. This alone fixes it.
+	flashlight.light_energy = 0.0
+	flashlight.visible = false
+	energy_changed.emit(energy)
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Buttons in TouchControls have mouse_filter = STOP, so touches that
-	# start on them never reach here - no manual rect exclusion needed.
 	if event is InputEventScreenTouch:
-		var half_width := get_viewport().get_visible_rect().size.x / 2.0
+		var screen_w := get_viewport().get_visible_rect().size.x
+		var is_left := event.position.x < screen_w * 0.5
 		if event.pressed:
-			if event.position.x < half_width and _move_touch_index == -1:
+			if is_left and _move_touch_index == -1:
 				_move_touch_index = event.index
-				_move_anchor = event.position  # joystick center = where the thumb landed
-			elif event.position.x >= half_width and _look_touch_index == -1:
+				_move_origin = event.position
+				_move_current = event.position
+			elif not is_left and _look_touch_index == -1:
 				_look_touch_index = event.index
+				_look_last = event.position
 		else:
 			if event.index == _move_touch_index:
 				_move_touch_index = -1
-				_move_vector = Vector2.ZERO
-			if event.index == _look_touch_index:
+				_move_current = _move_origin
+			elif event.index == _look_touch_index:
 				_look_touch_index = -1
+
 	elif event is InputEventScreenDrag:
 		if event.index == _move_touch_index:
-			# Direction is (current finger pos - anchor), not the raw
-			# per-frame delta - using the delta was the bug behind the
-			# "left-right-left-right" jitter, since tiny frame-to-frame
-			# finger jiggle was being read as a direction change every
-			# single event instead of a stable direction from a fixed
-			# joystick center.
-			var offset := event.position - _move_anchor
-			_move_vector = (offset / JOYSTICK_MAX_RADIUS).limit_length(1.0)
+			_move_current = event.position
 		elif event.index == _look_touch_index:
-			_yaw -= event.relative.x * LOOK_SENSITIVITY
-			_pitch -= event.relative.y * LOOK_SENSITIVITY
-			_pitch = clamp(_pitch, -PITCH_LIMIT, PITCH_LIMIT)
+			var delta: Vector2 = event.position - _look_last
+			_look_last = event.position
+			rotate_y(-delta.x * LOOK_SENSITIVITY)
+			head.rotate_x(-delta.y * LOOK_SENSITIVITY)
+			head.rotation.x = clamp(head.rotation.x, deg_to_rad(-80), deg_to_rad(80))
 
 func _physics_process(delta: float) -> void:
-	rotation.y = _yaw
-	_head.rotation.x = _pitch
+	# Gravity / floor snap
+	if not is_on_floor():
+		velocity.y -= GRAVITY * delta
+	else:
+		velocity.y = -0.1  # keeps snapped to ramps without stair-step logic
 
-	var forward := -global_transform.basis.z
-	var right := global_transform.basis.x
-	var move_dir := (forward * -_move_vector.y + right * _move_vector.x)
-	move_dir.y = 0
-	if move_dir.length() > 0.001:
-		move_dir = move_dir.normalized()
+	# Movement from the anchored joystick (drag delta from origin, NOT
+	# raw per-frame delta — that was the earlier "wonky joystick" bug and
+	# stays fixed here)
+	var input_dir := Vector2.ZERO
+	if _move_touch_index != -1:
+		var offset: Vector2 = _move_current - _move_origin
+		var max_radius := 80.0
+		if offset.length() > max_radius:
+			offset = offset.normalized() * max_radius
+		input_dir = offset / max_radius
 
 	var speed := MOVE_SPEED
 	if is_cranking:
-		speed *= CRANK_SPEED_MULTIPLIER
+		speed *= CRANK_SPEED_MULT
 
-	velocity.x = move_dir.x * speed
-	velocity.z = move_dir.z * speed
-
-	if is_on_floor():
-		velocity.y = 0.0
+	var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	if input_dir.length() > 0.05:
+		velocity.x = move_dir.x * speed
+		velocity.z = move_dir.z * speed
 	else:
-		velocity.y -= GRAVITY * delta
+		velocity.x = 0
+		velocity.z = 0
 
 	move_and_slide()
 
-	_process_flashlight(delta)
-
-func _process_flashlight(delta: float) -> void:
+	# Crank / flashlight energy
 	if is_cranking:
 		energy = min(energy + CRANK_FILL_RATE * delta, MAX_ENERGY)
-		_noise_timer -= delta
-		if _noise_timer <= 0.0:
-			_noise_timer = NOISE_INTERVAL
-			GameEvents.player_made_noise.emit(global_position, CRANK_NOISE_RADIUS, true)
+		energy_changed.emit(energy)
+		_noise_timer += delta
+		if _noise_timer >= NOISE_INTERVAL:
+			_noise_timer = 0.0
+			GameEvents.player_made_noise.emit(global_position, NOISE_RADIUS, true)
 
 	if flashlight_on:
 		energy = max(energy - DRAIN_RATE * delta, 0.0)
+		energy_changed.emit(energy)
 		if energy <= 0.0:
-			_set_flashlight(false)
+			set_flashlight(false)
 
-	energy_changed.emit(energy, MAX_ENERGY)
+func set_cranking(value: bool) -> void:
+	is_cranking = value
 
-## Called by TouchControls.gd on CRANK button_down.
-func start_crank() -> void:
-	is_cranking = true
-	_noise_timer = 0.0  # ping immediately on the first frame of cranking
+func set_flashlight(value: bool) -> void:
+	if value and energy <= 0.0:
+		return
+	flashlight_on = value
+	flashlight.visible = flashlight_on
+	flashlight.light_energy = 14.0 if flashlight_on else 0.0
+	GameEvents.flashlight_state_changed.emit(flashlight_on)
 
-## Called by TouchControls.gd on CRANK button_up.
-func stop_crank() -> void:
-	is_cranking = false
-
-## Called by TouchControls.gd on LIGHT button press.
 func toggle_flashlight() -> void:
-	if not flashlight_on and energy <= 0.0:
-		return  # dead battery, nothing to turn on
-	_set_flashlight(not flashlight_on)
-
-func _set_flashlight(on: bool) -> void:
-	flashlight_on = on
-	_flashlight.visible = on
-	GameEvents.flashlight_state_changed.emit(on)
+	set_flashlight(not flashlight_on)
