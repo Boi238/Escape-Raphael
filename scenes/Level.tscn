@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/Level.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/world/LevelBuilder.gd" id="2"]
 [ext_resource type="Environment" path="res://assets/default_env.tres" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="4"]
 [ext_resource type="Script" path="res://scripts/ui/TouchControls.gd" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/Monster.tscn" id="6"]
 
 [node name="Level" type="Node3D"]
 script = ExtResource("1")
@@ -16,6 +17,8 @@ environment = ExtResource("3")
 script = ExtResource("2")
 
 [node name="Player" parent="." instance=ExtResource("4")]
+
+[node name="Monster" parent="." instance=ExtResource("6")]
 
 [node name="TouchControls" type="CanvasLayer" parent="."]
 script = ExtResource("5")
