@@ -19,12 +19,18 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Create debug keystore
+      - name: Use committed debug keystore
         run: |
-          keytool -genkey -v -keystore /tmp/debug.keystore \
-            -storepass android -alias androiddebugkey -keypass android \
-            -keyalg RSA -keysize 2048 -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US"
+          # This keystore is committed at ci/debug.keystore and reused for
+          # every build on purpose - a debug key isn't sensitive (Android
+          # itself ships a well-known default one), but a FRESH one was
+          # being generated on every single CI run before this fix, which
+          # meant every APK had a different, random signing certificate.
+          # Android refuses to install an APK as an "update" over an app
+          # signed with a different certificate - it just silently fails
+          # or shows "App not installed," which is almost certainly why
+          # updates appeared to do nothing.
+          cp ci/debug.keystore /tmp/debug.keystore
 
       - name: Set up Godot export templates + editor settings
         run: |
