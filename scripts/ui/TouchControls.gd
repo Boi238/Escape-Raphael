@@ -27,10 +27,15 @@ var _flashlight_button: Button
 
 func _ready() -> void:
 	layer = 10
-	_player = get_tree().get_first_node_in_group("player")
 	_build_ui()
+	_get_player()  # first attempt now; handlers below retry if this came back null
 	if _player:
 		_player.energy_changed.connect(_on_energy_changed)
+
+func _get_player() -> Node:
+	if _player == null:
+		_player = get_tree().get_first_node_in_group("player")
+	return _player
 
 func _build_ui() -> void:
 	var root := Control.new()
@@ -103,16 +108,21 @@ func _build_ui() -> void:
 	root.add_child(_crank_button)
 
 func _on_flashlight_pressed() -> void:
-	if _player:
-		_player.toggle_flashlight()
+	var p := _get_player()
+	if p:
+		p.toggle_flashlight()
+		if not p.energy_changed.is_connected(_on_energy_changed):
+			p.energy_changed.connect(_on_energy_changed)
 
 func _on_crank_down() -> void:
-	if _player:
-		_player.start_crank()
+	var p := _get_player()
+	if p:
+		p.start_crank()
 
 func _on_crank_up() -> void:
-	if _player:
-		_player.stop_crank()
+	var p := _get_player()
+	if p:
+		p.stop_crank()
 
 func _on_energy_changed(current: float, max_energy: float) -> void:
 	if max_energy > 0.0:

@@ -196,12 +196,3 @@ assets/models/   3D models (your psx_base_male.glb lives here)
 assets/audio/    music/sfx
 assets/textures/ textures/materials
 ```
-
-
-## Reset — 2026-08-20
-
-This project was reset to a single combined drop (chunks 1-3 merged,
-CI $HOME-override bug fixed) after a prior push/CI debugging session.
-If you're starting fresh: wipe your local Termux clone, re-clone (or
-re-init) your GitHub repo, unzip `escape-raphael-FULL-FIXED.zip`
-straight into it, commit, and push. See the chat for exact commands.

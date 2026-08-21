@@ -70,10 +70,10 @@ func _ready() -> void:
 	floor_snap_length = 0.35
 
 	_flashlight.visible = false
-	_flashlight.light_energy = 7.0
-	_flashlight.spot_range = 15.0
-	_flashlight.spot_angle = 30.0
-	_flashlight.spot_angle_attenuation = 2.0
+	_flashlight.light_energy = 14.0
+	_flashlight.spot_range = 22.0
+	_flashlight.spot_angle = 42.0
+	_flashlight.spot_angle_attenuation = 1.5
 	_flashlight.light_color = Color(1.0, 0.96, 0.85)
 	_flashlight.shadow_enabled = true
 
