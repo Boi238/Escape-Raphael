@@ -1,15 +1,15 @@
 extends CharacterBody3D
-## Monster (Chunk 4).
+## Monster (Chunk 4, body updated in Chunk 4.1 to use Raph_with_UV.obj).
 ##
-## Built entirely from primitive meshes (boxes/capsules) in a rotatable
-## node hierarchy instead of a skinned/rigged mesh - there's no skeleton
-## to attach a real animation to (the uploaded psx_base_male.glb turned
-## out to be a static mesh with no bones or animation data at all), and
-## authoring skinned bone animation curves by hand with no way to preview
-## them here would be very likely to come out wrong. Rotating rigid
-## segments via code is fully predictable to reason about without an
-## editor, and a slightly jerky/segmented crawl actually reads as MORE
-## wrong/unsettling for a horror creature, not less.
+## Visual body is the uploaded Raph_with_UV.obj mesh - solid black
+## (procedurally cracked, no face texture), glowing red eyes, no
+## identifying features. Like psx_base_male.glb before it, this is a
+## single static mesh with no skeleton/bones, so it can't be given a
+## real per-limb crawl animation - instead the whole mesh is pitched
+## into a crouched stance and given a whole-body bob/sway/lurch while
+## moving (see _animate_gait). The face-texture slot referenced by the
+## included .mtl is intentionally left unset for now (shape only, no
+## texture) pending a follow-up asset.
 ##
 ## Behavior (per spec):
 ##   - Only moves while NOT lit by the player's flashlight.
@@ -39,14 +39,26 @@ const HUNT_FORGET_TIME := 12.0         # seconds after a noise ping before givin
 const LIGHT_CONE_HALF_ANGLE_COS := 0.934   # cos(21 deg) - half of Player's 42 deg spot_angle
 const LIGHT_RANGE := 22.0
 
-# Body proportions (meters). "Elongated limbs" per the chosen style: the
-# lower limb segments (forearm/shin) are noticeably longer relative to
-# the upper segments than real human proportions.
-const TORSO_SIZE := Vector3(0.55, 0.45, 1.2)
-const HEAD_SIZE := Vector3(0.32, 0.3, 0.34)
-const UPPER_LIMB_LEN := 0.38
-const LOWER_LIMB_LEN := 0.58            # elongated - normal would be ~0.35
-const LIMB_RADIUS := 0.07
+# --- Body model (Chunk 4.1: replaced primitive-box body with the
+# uploaded Raph_with_UV.obj shape) ---
+# This is a single static mesh (~2.13m standing height in its own file
+# units, no skeleton/bones - same situation as psx_base_male.glb
+# earlier), so there's no way to bend it into a real four-limb crawl
+# pose or drive individual limb joints like the old primitive rig did.
+# What IS done instead: the whole mesh is scaled down, pitched forward
+# into a crouched/crawling stance, and given a whole-body bob+sway while
+# moving (see _animate_gait) so it still reads as "crawling," just as a
+# single-piece lurch rather than a per-limb gait.
+# MODEL_SCALE / MODEL_TILT_DEG / MONSTER_EYE_OFFSET below are estimates
+# based on the file's raw vertex bounding box, not a visual preview (no
+# Godot editor in this pipeline) - if the pitch or eye position looks
+# off once you actually see it running, these three constants are the
+# only things you need to nudge.
+const MODEL_PATH := "res://assets/models/monster/Raph_with_UV.obj"
+const MODEL_SCALE := 0.55                    # shrinks ~2.13m tall model to a more monster-sized ~1.15m long when tilted
+const MODEL_TILT_DEG := 65.0                 # forward pitch, standing -> crouched/crawling-ish
+const MODEL_EYE_LOCAL_POS := Vector3(-0.095, 1.97, -0.13)   # estimated head/face area, in the model's own (untilted, unscaled) coordinate space
+const MODEL_EYE_SPACING := 0.07
 
 signal caught_player
 
@@ -59,9 +71,7 @@ var _hunt_target: Vector3 = Vector3.ZERO
 var _hunt_timer := 0.0
 var _wander_target: Vector3 = Vector3.ZERO
 
-# Limb node references, filled in by _build_body(). Each entry:
-# { root: Node3D, upper: MeshInstance3D, lower_pivot: Node3D, phase_offset: float }
-var _limbs: Array = []
+var _body_visual: Node3D = null   # the tilted/scaled model root - _animate_gait bobs/sways this
 
 func _ready() -> void:
 	add_to_group("monster")
@@ -118,92 +128,53 @@ func _make_material(base_color: Color) -> StandardMaterial3D:
 func _build_body() -> void:
 	var mat := _make_material(Color(0.02, 0.02, 0.02))
 
-	var torso := MeshInstance3D.new()
-	var torso_mesh := BoxMesh.new()
-	torso_mesh.size = TORSO_SIZE
-	torso.mesh = torso_mesh
-	torso.material_override = mat
-	torso.position = Vector3(0, 0.55, 0)
-	add_child(torso)
+	var mesh := load(MODEL_PATH)
+	if mesh == null:
+		push_error("Monster: failed to load " + MODEL_PATH + " - falling back would require the old primitive body, which has been removed. Check the file was actually committed/pushed.")
+		return
 
-	var head := MeshInstance3D.new()
-	var head_mesh := BoxMesh.new()
-	head_mesh.size = HEAD_SIZE
-	head.mesh = head_mesh
-	head.material_override = mat
-	# Front of the torso, in local -Z (matches Player's -Z-forward convention).
-	head.position = Vector3(0, 0.6, -(TORSO_SIZE.z / 2.0 + HEAD_SIZE.z / 2.0 - 0.05))
-	add_child(head)
+	# _body_visual is the node that gets scaled/tilted AND bobbed/swayed
+	# in _animate_gait - kept separate from the CharacterBody3D root so
+	# the collision capsule (built in _build_collision, already correct)
+	# never moves relative to physics, only the visible mesh wiggles.
+	_body_visual = Node3D.new()
+	_body_visual.rotation.x = deg_to_rad(-MODEL_TILT_DEG)  # pitch forward into a crouch
+	add_child(_body_visual)
 
-	_build_eyes(head)
+	var body_mesh := MeshInstance3D.new()
+	body_mesh.mesh = mesh
+	body_mesh.material_override = mat
+	body_mesh.scale = Vector3.ONE * MODEL_SCALE
+	_body_visual.add_child(body_mesh)
 
-	# Limb roots at the four "shoulder/hip" corners of the torso, each
-	# reaching down to the floor. phase_offset creates the diagonal-pair
-	# crawl gait (front-left+back-right together, opposite the other
-	# pair) - the standard quadruped walk pattern.
-	var half_w := TORSO_SIZE.x / 2.0
-	_add_limb(Vector3(half_w, 0.5, -TORSO_SIZE.z * 0.32), 0.0, mat)          # front-right
-	_add_limb(Vector3(-half_w, 0.5, -TORSO_SIZE.z * 0.32), PI, mat)          # front-left
-	_add_limb(Vector3(half_w, 0.5, TORSO_SIZE.z * 0.32), PI, mat)            # back-right
-	_add_limb(Vector3(-half_w, 0.5, TORSO_SIZE.z * 0.32), 0.0, mat)          # back-left
+	_build_eyes(body_mesh)
 
-func _build_eyes(head: MeshInstance3D) -> void:
+func _build_eyes(body_mesh: MeshInstance3D) -> void:
 	var eye_mat := StandardMaterial3D.new()
 	eye_mat.albedo_color = Color(1.0, 0.05, 0.05)
 	eye_mat.emission_enabled = true
 	eye_mat.emission = Color(1.0, 0.05, 0.05)
 	eye_mat.emission_energy_multiplier = 4.0
 
+	# Parented to body_mesh (which already carries MODEL_SCALE) so eye
+	# position is authored in the model's own raw coordinate space -
+	# MODEL_EYE_LOCAL_POS is an estimate of the head/face area from the
+	# vertex bounding box, not a verified point on the actual face.
 	for side in [-1.0, 1.0]:
 		var eye := MeshInstance3D.new()
 		var eye_mesh := SphereMesh.new()
-		eye_mesh.radius = 0.035
-		eye_mesh.height = 0.07
+		eye_mesh.radius = 0.06
+		eye_mesh.height = 0.12
 		eye.mesh = eye_mesh
 		eye.material_override = eye_mat
-		eye.position = Vector3(side * 0.09, 0.02, -HEAD_SIZE.z / 2.0)
-		head.add_child(eye)
+		eye.position = MODEL_EYE_LOCAL_POS + Vector3(side * MODEL_EYE_SPACING, 0, 0)
+		body_mesh.add_child(eye)
 
 		var glow := OmniLight3D.new()
 		glow.light_color = Color(1.0, 0.1, 0.1)
 		glow.light_energy = 0.6
 		glow.omni_range = 1.5
 		eye.add_child(glow)
-
-func _add_limb(root_pos: Vector3, phase_offset: float, mat: StandardMaterial3D) -> void:
-	var root := Node3D.new()
-	root.position = root_pos
-	add_child(root)
-
-	var upper := MeshInstance3D.new()
-	var upper_mesh := CapsuleMesh.new()
-	upper_mesh.radius = LIMB_RADIUS
-	upper_mesh.height = UPPER_LIMB_LEN
-	upper.mesh = upper_mesh
-	upper.material_override = mat
-	# Capsule's long axis is local Y by default; offset it so the segment
-	# extends DOWN from the joint (root) rather than being centered on it.
-	upper.position.y = -UPPER_LIMB_LEN / 2.0
-	root.add_child(upper)
-
-	var lower_pivot := Node3D.new()
-	lower_pivot.position.y = -UPPER_LIMB_LEN
-	root.add_child(lower_pivot)
-
-	var lower := MeshInstance3D.new()
-	var lower_mesh := CapsuleMesh.new()
-	lower_mesh.radius = LIMB_RADIUS * 0.85
-	lower_mesh.height = LOWER_LIMB_LEN
-	lower.mesh = lower_mesh
-	lower.material_override = mat
-	lower.position.y = -LOWER_LIMB_LEN / 2.0
-	lower_pivot.add_child(lower)
-
-	_limbs.append({
-		"root": root,
-		"lower_pivot": lower_pivot,
-		"phase_offset": phase_offset,
-	})
 
 func _physics_process(delta: float) -> void:
 	var lit := _is_illuminated_by_flashlight()
@@ -284,12 +255,26 @@ func _animate_gait(delta: float) -> void:
 	# else: hold last pose rather than snapping to a fixed idle pose -
 	# reads as "was mid-crawl, stopped" rather than resetting oddly.
 
-	for limb in _limbs:
-		var phase: float = _gait_phase + limb["phase_offset"]
-		var swing := sin(phase) * 0.5          # shoulder/hip forward-back swing
-		var lift := max(sin(phase), 0.0) * 0.9  # knee/elbow bend, only during "lift" half of the stride
-		(limb["root"] as Node3D).rotation.x = swing
-		(limb["lower_pivot"] as Node3D).rotation.x = -lift
+	if _body_visual == null:
+		return
+
+	# No skeleton on this model, so there's no per-limb gait anymore -
+	# instead the whole tilted body bobs up/down, sways side to side,
+	# and rocks its forward pitch slightly, all driven by the same
+	# _gait_phase used before. Amplitudes settle back toward 0 when not
+	# moving instead of snapping, so a stop mid-lurch doesn't pop.
+	var target_bob := 0.0
+	var target_sway := 0.0
+	var target_pitch_offset := 0.0
+	if _is_moving:
+		target_bob = abs(sin(_gait_phase)) * 0.12          # vertical lurch
+		target_sway = sin(_gait_phase * 0.5) * 0.08         # slow side-to-side
+		target_pitch_offset = sin(_gait_phase) * deg_to_rad(6.0)  # subtle forward/back rock
+
+	var blend := 1.0 - exp(-10.0 * delta)  # smooth toward target, ~0.1s response
+	_body_visual.position.y = lerp(_body_visual.position.y, target_bob, blend)
+	_body_visual.position.x = lerp(_body_visual.position.x, target_sway, blend)
+	_body_visual.rotation.x = lerp(_body_visual.rotation.x, deg_to_rad(-MODEL_TILT_DEG) + target_pitch_offset, blend)
 
 func _on_player_made_noise(position: Vector3, radius: float, reveals_position: bool) -> void:
 	if not reveals_position:
